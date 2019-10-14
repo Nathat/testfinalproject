@@ -1,38 +1,151 @@
 <!DOCTYPE html>
 <html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
+
+<head>
+  <style>
     body {
-        background-color: lightblue;
-        color: navy;
+      background-color: lightblue;
+      color: navy;
     }
 
     h1 {
-        color: navy;
-        margin-left: 20px;
+      color: navy;
+      margin-left: 20px;
     }
 
     li {
-        cursor: pointer
+      cursor: pointer
     }
 
     img {
-        border-radius: 8px;
+      border-radius: 8px;
     }
-</style>
+  </style>
+  <script>
+    function changeColor() {
+      let bg = document.getElementById("bg");
+      bg.style.backgroundColor = "#000000";
+    }
+    function fullName() {
+      let firstName = document.form1.txtName.value
+      let lastName = document.form1.txtLastName.value
 
-<body>
-    <h1>Responsive Resume Page</h1><br>
-    <img src="./img/meresponsive.png" style="max-width:100%;height:auto;"><br><br>
+      document.getElementById("idName").innerHTML = firstName + " " + lastName
+    }
+  </script>
+</head>
 
-    <font color="black">ชื่อ : </font>ณธรรศ วรกฤตพงศ์<br>
-    <font color="black">ชื่อเล่น : </font>โน้ต<br>
-    <font color="black">การศึกษา : </font>วิศวกรรมศาสตร์<br>
-    <font color="black">ความสามารถพิเศษ : </font>
-    <ul>
-        <li>ตีกลอง</li>
+<body id="bg">
+  <h1>Dynamic Resume Page</h1><br>
+  <img onmouseover="bigImg(this)" onmouseout="normalImg(this)" border="0" src="./img/me.png" width="200"
+    height="200"><br><br><br>
+  <script>
+    function bigImg(x) {
+      x.style.height = "472px";
+      x.style.width = "474px";
+    }
 
-    </ul>
+    function normalImg(x) {
+      x.style.height = "200px";
+      x.style.width = "200px";
+    }
+  </script>
+  <font color="black">ชื่อ : </font>
+  <div id="idName">ณธรรศ วรกฤตพงศ์</div><br>
+  <font color="black">เปลี่ยนชื่อ</font>
+  <form name="form1">
+    <font color="black">ชื่อ :</font>
+    <input type="text" name="txtName" value="">
+    <br>
+    <font color="black">นามสกุล :</font>
+    <input type="text" name="txtLastName" value="">
+    <br><br>
+
+
+    <input type="button" onclick="fullName()" value="เปลี่ยนชื่อ">
+  </form><br>
+  <font color="black">ชื่อเล่น : </font>โน้ต<br>
+  <font color="black">การศึกษา : </font>วิศวกรรมศาสตร์<br>
+  <font color="black">ความสามารถพิเศษ : </font>
+  <ul id="list">
+    <li>ตีกลอง</li>
+
+  </ul>
+  <font color="black">เพิ่มหรือลบความสามารถพิเศษ</font><br>
+
+  <input type="text" id="txt">
+  <button onclick="addLI()">เพิ่ม</button>
+  <button onclick="deleteLI()">ลบ</button><br><br>
+
+  <script>
+
+    var inputText = document.getElementById("txt"),
+      items = document.querySelectorAll("#list li"),
+      tab = [], index;
+
+    // get the selected li index using array
+    // populate array with li values
+
+    for (var i = 0; i < items.length; i++) {
+      tab.push(items[i].innerHTML);
+    }
+
+    // get li index onclick
+    for (var i = 0; i < items.length; i++) {
+
+      items[i].onclick = function () {
+        index = tab.indexOf(this.innerHTML);
+        console.log(this.innerHTML + " INDEX = " + index);
+        // set the selected li value into input text
+        inputText.value = this.innerHTML;
+      };
+
+    }
+
+    function refreshArray() {
+      // clear array
+      tab.length = 0;
+      items = document.querySelectorAll("#list li");
+      // fill array
+      for (var i = 0; i < items.length; i++) {
+        tab.push(items[i].innerHTML);
+      }
+    }
+    function addLI() {
+
+      var listNode = document.getElementById("list"),
+        textNode = document.createTextNode(inputText.value),
+        liNode = document.createElement("LI");
+
+      liNode.appendChild(textNode);
+      listNode.appendChild(liNode);
+
+      refreshArray();
+
+      // add event to the new LI
+
+      liNode.onclick = function () {
+        index = tab.indexOf(liNode.innerHTML);
+        console.log(liNode.innerHTML + " INDEX = " + index);
+        // set the selected li value into input text
+        inputText.value = liNode.innerHTML;
+      };
+
+    }
+
+    function deleteLI() {
+
+      refreshArray();
+      if (items.length > 0) {
+        items[index].parentNode.removeChild(items[index]);
+        inputText.value = "";
+      }
+    }
+
+  </script>
+
+  <input onClick="changeColor();" type="button" value="เปลี่ยนสีพื้นหลัง">
+
 </body>
 
 </html>
